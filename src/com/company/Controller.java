@@ -1,31 +1,35 @@
 package com.company;
 
-import com.company.Views.View;
+import com.company.Views.*;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class Controller {
+    private static Controller instance;
     private Model _model;
-    private View _view;
+
+    public static Controller GetInstance() {
+        if (instance == null) {
+            instance = new Controller();
+        }
+        return instance;
+    }
 
     public void SetModel(Model model) {
         this._model = model;
     }
 
-    public void SetView(View view) {
-        this._view = view;
-    }
-
     public void GetHistoryAction() {
         var history = this._model.GetHistory();
-        this._view.OpenHistoryFrame();
-        this._view.UpdateHistory(history);
+        var view = HistoryView.GetInstance();
+        view.Open();
+        view.UpdateHistory(history);
     }
 
     public void PrintCheckAction() {
-        var data = View.History(this._model.GetHistory()).toString();
+        var data = HistoryView.History(this._model.GetHistory()).toString();
         this.WriteToFile(data);
     }
 
@@ -47,24 +51,35 @@ public class Controller {
         writer.flush();
     }
 
+    public void IndexAction() {
+        var view = IndexView.GetInstance();
+        view.Open();
+    }
+
     public void AddIncomeIndexAction() {
-        this._view.OpenAddAction();
+        var view = AddIncomeView.GetInstance();
+        view.Open();
     }
 
     public void AddExpenditureIndexAction() {
-        this._view.OpenAddExpenditure();
+        var view = AddExpenditureView.GetInstance();
+        view.Open();
     }
 
     public void AddIncomeCreateAction() {
-        this._model.AddIncome(this._view.GetIncomeDescription(), this._view.GetIncomeValue());
-        this._view.CloseAddAction();
-        this._view.UpdateBudget();
+        var view = AddIncomeView.GetInstance();
+        this._model.AddIncome(view.GetIncomeDescription(), view.GetIncomeValue());
+        view.Close();
+        var mainView = IndexView.GetInstance();
+        mainView.UpdateBudget(this._model.GetBudget());
     }
 
     public void AddExpenditureCreateAction() {
-        this._model.AddExpense(this._view.GetExpenditureDescription(), this._view.GetExpenditureValue());
-        this._view.CloseExpenditureAction();
-        this._view.UpdateBudget();
+        var view = AddExpenditureView.GetInstance();
+        this._model.AddExpense(view.GetExpenditureDescription(), view.GetExpenditureValue());
+        view.CloseExpenditureAction();
+        var mainView = IndexView.GetInstance();
+        mainView.UpdateBudget(this._model.GetBudget());
     }
 
 }

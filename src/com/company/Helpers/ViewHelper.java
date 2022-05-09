@@ -1,7 +1,6 @@
 package com.company.Helpers;
 
 import com.company.ButtonClickListener;
-import com.company.Controller;
 
 import javax.swing.*;
 
@@ -16,9 +15,9 @@ public class ViewHelper {
         return button;
     }
 
-    public static void AddCommandForButton(JButton button, String command, Controller controller)
+    public static void AddCommandForButton(JButton button, String command)
     {
-        button.addActionListener(new ButtonClickListener(controller));
+        button.addActionListener(new ButtonClickListener());
         button.setActionCommand(command);
     }
 }

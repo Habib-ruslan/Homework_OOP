@@ -4,23 +4,25 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ButtonClickListener implements ActionListener {
-    private final Controller _controller;
-    public ButtonClickListener(Controller controller)
-    {
-        this._controller = controller;
-    }
+    public static final String ADD_INCOME_INDEX_ACTION = "addIncome";
+    public static final String ADD_INCOME_CREATE_ACTION = "submitAddIncome";
+    public static final String ADD_EXPENDITURE_INDEX_ACTION = "addExpenditure";
+    public static final String ADD_EXPENDITURE_CREATE_ACTION = "submitAddExpenditure";
+    public static final String HISTORY_INDEX_ACTION = "getHistory";
+    public static final String PRINT_CHECK_INDEX_ACTION = "printCheck";
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String command = e.getActionCommand();
+        var controller = Controller.GetInstance();
 
+        var command = e.getActionCommand();
         switch (command) {
-            case "addIncome": this._controller.AddIncomeIndexAction(); break;
-            case "addExpenditure": this._controller.AddExpenditureIndexAction(); break;
-            case "submitAddIncome": this._controller.AddIncomeCreateAction(); break;
-            case "submitAddExpenditure": this._controller.AddExpenditureCreateAction(); break;
-            case "getHistory": this._controller.GetHistoryAction(); break;
-            case "printCheck": this._controller.PrintCheckAction(); break;
+            case ADD_INCOME_INDEX_ACTION -> controller.AddIncomeIndexAction();
+            case ADD_INCOME_CREATE_ACTION -> controller.AddIncomeCreateAction();
+            case ADD_EXPENDITURE_INDEX_ACTION -> controller.AddExpenditureIndexAction();
+            case ADD_EXPENDITURE_CREATE_ACTION -> controller.AddExpenditureCreateAction();
+            case HISTORY_INDEX_ACTION -> controller.GetHistoryAction();
+            case PRINT_CHECK_INDEX_ACTION -> controller.PrintCheckAction();
         }
     }
 }
