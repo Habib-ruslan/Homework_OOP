@@ -12,22 +12,21 @@ public class IndexView {
     private JFrame frame;
     private static IndexView instance;
 
-    public static IndexView GetInstance()
-    {
+    public static IndexView GetInstance() {
         if (instance == null) {
             instance = new IndexView();
         }
         return instance;
     }
 
-    private IndexView()
-    {
+    private IndexView() {
         this.Init();
     }
+
     public void Init() {
         this.frame = new JFrame("Simon the game");
         this.frame.setSize(400, 400);
-        this.frame.setLayout(new GridLayout(2 ,1));
+        this.frame.setLayout(new GridLayout(2, 1));
 
         var headerLabel = new JLabel("", JLabel.CENTER);
         var statusLabel = new JLabel("", JLabel.CENTER);
@@ -58,8 +57,7 @@ public class IndexView {
         this.frame.setLayout(new FlowLayout());
     }
 
-    public void Open()
-    {
+    public void Open() {
         this.frame.setVisible(true);
     }
 

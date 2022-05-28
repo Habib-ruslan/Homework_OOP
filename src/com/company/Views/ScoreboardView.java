@@ -25,7 +25,7 @@ public class ScoreboardView {
     }
 
     public void Init() {
-        this.historyFrame = new JFrame("История");
+        this.historyFrame = new JFrame("Scoreboard");
         this.historyFrame.setSize(900, 400);
         this.historyFrame.setLayout(new GridLayout(3, 1));
         this.historyInfo = new JTextArea();
@@ -41,7 +41,7 @@ public class ScoreboardView {
     public static StringBuilder History(ArrayList<Integer> history) {
         StringBuilder str = new StringBuilder();
         if (history.size() == 0) {
-            System.out.println("История операций пуста...");
+            System.out.println("Таблица рекордов пуста...");
             return new StringBuilder();
         }
         for (var i = 0; i < history.size(); i++) {

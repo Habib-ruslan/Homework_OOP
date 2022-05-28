@@ -64,22 +64,19 @@ public class PlayView {
         var redButton = ViewHelper.CreateButton("Red button", "");
         redButton.setPreferredSize(new Dimension(150, 150));
         redButton.setBackground(Color.RED);
-        redButton.addActionListener(this.CreateListenerForButtons(RED_BUTTON_INDEX));
 
         var greenButton = ViewHelper.CreateButton("Green button", "");
         greenButton.setPreferredSize(new Dimension(150, 150));
         greenButton.setBackground(Color.GREEN);
-        greenButton.addActionListener(this.CreateListenerForButtons(GREEN_BUTTON_INDEX));
 
         var blueButton = ViewHelper.CreateButton("Blue button", "");
         blueButton.setPreferredSize(new Dimension(150, 150));
         blueButton.setBackground(Color.BLUE);
-        blueButton.addActionListener(this.CreateListenerForButtons(BLUE_BUTTON_INDEX));
 
         var yellowButton = ViewHelper.CreateButton("Yellow button", "");
         yellowButton.setPreferredSize(new Dimension(150, 150));
         yellowButton.setBackground(Color.YELLOW);
-        yellowButton.addActionListener(this.CreateListenerForButtons(YELLOW_BUTTON_INDEX));
+        this.Start();
 
         this.buttons.add(redButton);
         this.buttons.add(greenButton);
@@ -169,8 +166,21 @@ public class PlayView {
         this.frame.setVisible(true);
     }
 
-    public void ClearMessage()
-    {
+    public void Stop() {
+        for (JButton currentButton : this.buttons) {
+            for (ActionListener listener : currentButton.getActionListeners()) {
+                currentButton.removeActionListener(listener);
+            }
+        }
+    }
+
+    public void Start() {
+        for (var i = 0; i < this.buttons.size(); i++) {
+            this.buttons.get(i).addActionListener(this.CreateListenerForButtons(i));
+        }
+    }
+
+    public void ClearMessage() {
         this.message.setText("");
     }
 }

@@ -1,5 +1,6 @@
 package com.company.Services;
 
+import com.company.Controllers.Controller;
 import com.company.Helpers.DelayHelper;
 import com.company.Models.Session;
 import com.company.Views.PlayView;
@@ -19,7 +20,11 @@ public class SimonGameService {
     private ArrayList<Integer> sequence;
     private Session session;
 
-    private final static int SCORE_FOR_SUCCESS = 10;
+    private final static int SCORE_FOR_SUCCESS = 5;
+    private final static float DIFFICULTY_MULTIPLIER = 0.5f;
+    private int rewardForCurrentRound;
+    private int maxLengthSequence = 5;
+    private int minLengthSequence = 3;
 
     public SimonGameService() {
         this.Init();
@@ -34,8 +39,7 @@ public class SimonGameService {
         return this.timer;
     }
 
-    public ArrayList<Integer> GetSequence()
-    {
+    public ArrayList<Integer> GetSequence() {
         return this.sequence;
     }
 
@@ -64,6 +68,7 @@ public class SimonGameService {
     }
 
     public void Play() {
+        this.view.Start();
         this.view.Open();
         this.view.PrintReady();
         this.CreateNewSession();
@@ -76,8 +81,7 @@ public class SimonGameService {
         DelayHelper.CreateAndStartTimer(1000, listener);
     }
 
-    private void CreateNewSession()
-    {
+    private void CreateNewSession() {
         this.session = new Session();
     }
 
@@ -85,7 +89,8 @@ public class SimonGameService {
         var result = new ArrayList<Integer>();
         var date = new Date();
         var random = new Random(date.getTime());
-        int length = (int) (4 + random.nextDouble() * 3);
+        int length = (int) (this.minLengthSequence + random.nextDouble() * (this.maxLengthSequence - this.minLengthSequence + 1));
+        this.rewardForCurrentRound = SCORE_FOR_SUCCESS + (int) (length * DIFFICULTY_MULTIPLIER);
         System.out.println(length + "\n");
         for (var i = 0; i < length; i++) {
             var index = (int) (random.nextDouble() * 4);
@@ -108,17 +113,20 @@ public class SimonGameService {
         this.expectedButtonIndex = this.sequence.get(currentIndex);
     }
 
-    public void Fail()
-    {
+    public void Fail() {
         this.view.PrintFail();
         System.out.println(this.session.getScore());
+        var controller = Controller.GetInstance();
+        controller.AddScoreAction(this.session.getScore());
+        this.view.Stop();
     }
 
-    public void Success()
-    {
+    public void Success() {
         this.view.PrintSuccess();
-        this.session.addScore(SCORE_FOR_SUCCESS);
+        this.session.addScore(this.rewardForCurrentRound);
         this.view.UpdateScore(this.session.getScore());
+
+        this.IncreaseDifficulty();
         var self = this;
         var view = this.view;
         var readyListener = new ActionListener() {
@@ -135,4 +143,10 @@ public class SimonGameService {
         DelayHelper.CreateAndStartTimer(1000, listener);
     }
 
+    private void IncreaseDifficulty() {
+        this.maxLengthSequence++;
+        if (this.maxLengthSequence % 3 == 0) {
+            this.minLengthSequence++;
+        }
+    }
 }

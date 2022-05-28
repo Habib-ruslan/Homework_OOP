@@ -5,8 +5,7 @@ import com.company.Models.Scoreboard;
 
 public class Main {
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         var controller = Controller.GetInstance();
         controller.SetModel(new Scoreboard());
 
