@@ -3,6 +3,7 @@ package com.company.Views;
 import com.company.ButtonClickListener;
 import com.company.Helpers.DelayHelper;
 import com.company.Helpers.ViewHelper;
+import com.company.Services.SimonGameService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,6 +33,7 @@ public class PlayView {
 
     private final ArrayList<JButton> buttons = new ArrayList<>();
 
+    private SimonGameService service;
     private static PlayView instance;
 
     public static PlayView GetInstance() {
@@ -39,6 +41,14 @@ public class PlayView {
             instance = new PlayView();
         }
         return instance;
+    }
+
+    public void SetService(SimonGameService service) {
+        this.service = service;
+    }
+
+    public SimonGameService GetService() {
+        return this.service;
     }
 
     private PlayView() {
@@ -49,22 +59,27 @@ public class PlayView {
         this.frame = new JFrame("Simon the game");
         this.frame.setSize(400, 400);
         this.frame.setLayout(new GridLayout(4, 2));
+        var self = this;
 
         var redButton = ViewHelper.CreateButton("Red button", "");
         redButton.setPreferredSize(new Dimension(150, 150));
         redButton.setBackground(Color.RED);
+        redButton.addActionListener(this.CreateListenerForButtons(RED_BUTTON_INDEX));
 
         var greenButton = ViewHelper.CreateButton("Green button", "");
         greenButton.setPreferredSize(new Dimension(150, 150));
         greenButton.setBackground(Color.GREEN);
+        greenButton.addActionListener(this.CreateListenerForButtons(GREEN_BUTTON_INDEX));
 
         var blueButton = ViewHelper.CreateButton("Blue button", "");
         blueButton.setPreferredSize(new Dimension(150, 150));
         blueButton.setBackground(Color.BLUE);
+        blueButton.addActionListener(this.CreateListenerForButtons(BLUE_BUTTON_INDEX));
 
         var yellowButton = ViewHelper.CreateButton("Yellow button", "");
         yellowButton.setPreferredSize(new Dimension(150, 150));
         yellowButton.setBackground(Color.YELLOW);
+        yellowButton.addActionListener(this.CreateListenerForButtons(YELLOW_BUTTON_INDEX));
 
         this.buttons.add(redButton);
         this.buttons.add(greenButton);
@@ -89,6 +104,15 @@ public class PlayView {
         this.frame.setVisible(false);
     }
 
+    private ButtonClickListener CreateListenerForButtons(int index) {
+        var self = this;
+        return new ButtonClickListener() {
+            public void actionPerformed(ActionEvent event) {
+                self.GetService().SendButtonInput(index);
+            }
+        };
+    }
+
     public void PrintSuccess() {
         this.message.setText("Правильно!");
         this.message.setForeground(Color.GREEN);
@@ -97,6 +121,11 @@ public class PlayView {
     public void PrintFail() {
         this.message.setText("Неудача :(");
         this.message.setForeground(Color.RED);
+    }
+
+    public void PrintReady() {
+        this.message.setText("Готов?");
+        this.message.setForeground(Color.BLACK);
     }
 
     public void UpdateScore(int newScore) {
@@ -136,6 +165,12 @@ public class PlayView {
     }
 
     public void Open() {
+        this.ClearMessage();
         this.frame.setVisible(true);
+    }
+
+    public void ClearMessage()
+    {
+        this.message.setText("");
     }
 }

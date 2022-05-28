@@ -1,7 +1,7 @@
 package com.company.Models;
 
 public class Session {
-    private int _score;
+    private int _score = 0;
 
     public void setScore(int value)
     {
