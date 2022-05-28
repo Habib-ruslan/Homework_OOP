@@ -12,8 +12,6 @@ public class IndexView {
     private JFrame frame;
     private static IndexView instance;
 
-    private JTextArea budgetInfo;
-
     public static IndexView GetInstance()
     {
         if (instance == null) {
@@ -27,27 +25,21 @@ public class IndexView {
         this.Init();
     }
     public void Init() {
-        this.frame = new JFrame("Main menu");
+        this.frame = new JFrame("Simon the game");
         this.frame.setSize(400, 400);
-        this.frame.setLayout(new GridLayout(3, 1));
+        this.frame.setLayout(new GridLayout(2 ,1));
 
-        JLabel headerLabel = new JLabel("", JLabel.CENTER);
-        JLabel statusLabel = new JLabel("", JLabel.CENTER);
-        statusLabel.setSize(350, 100);
-        var button = ViewHelper.CreateButton("Button1", "Добавить доход");
-        ViewHelper.AddCommandForButton(button, ButtonClickListener.ADD_INCOME_INDEX_ACTION);
+        var headerLabel = new JLabel("", JLabel.CENTER);
+        var statusLabel = new JLabel("", JLabel.CENTER);
+        var button = ViewHelper.CreateButton("Button 1", "Play");
+        button.setPreferredSize(new Dimension(400, 50));
+        button.setBackground(new Color(236, 197, 68));
+        ViewHelper.AddCommandForButton(button, ButtonClickListener.PLAY_ACTION);
 
-        var button2 = ViewHelper.CreateButton("Button 2", "Добавить расход");
-        ViewHelper.AddCommandForButton(button2, ButtonClickListener.ADD_EXPENDITURE_INDEX_ACTION);
-
-        var button3 = ViewHelper.CreateButton("Button 3", "Посмотреть историю операций");
-        ViewHelper.AddCommandForButton(button3, ButtonClickListener.HISTORY_INDEX_ACTION);
-
-        var button4 = ViewHelper.CreateButton("Button 4", "Распечатать чек");
-        ViewHelper.AddCommandForButton(button4, ButtonClickListener.PRINT_CHECK_INDEX_ACTION);
-
-        this.budgetInfo = new JTextArea();
-        this.UpdateBudget(0);
+        var button2 = ViewHelper.CreateButton("Button 2", "Scoreboard");
+        button2.setPreferredSize(new Dimension(400, 50));
+        button2.setBackground(new Color(88, 212, 0));
+        ViewHelper.AddCommandForButton(button2, ButtonClickListener.GET_SCOREBOARD_ACTION);
 
         this.frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent windowEvent) {
@@ -57,25 +49,13 @@ public class IndexView {
         JPanel controlPanel = new JPanel();
         controlPanel.setLayout(new FlowLayout());
 
-        this.frame.add(this.budgetInfo);
         this.frame.add(headerLabel);
         this.frame.add(controlPanel);
         this.frame.add(statusLabel);
         this.frame.add(button);
         this.frame.add(button2);
-        this.frame.add(button3);
-        this.frame.add(button4);
         this.frame.setVisible(false);
         this.frame.setLayout(new FlowLayout());
-    }
-
-    public void UpdateBudget(int budget) {
-        this.budgetInfo.setText(
-                """
-                                     Добро пожаловать!
-                Текущий бюджет:""" + " " + budget + "\n" + """
-                                      Выберете действие:
-                                                                                """);
     }
 
     public void Open()

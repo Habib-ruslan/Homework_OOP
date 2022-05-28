@@ -1,5 +1,7 @@
-package com.company;
+package com.company.Controllers;
 
+import com.company.Models.Scoreboard;
+import com.company.Services.SimonGameService;
 import com.company.Views.*;
 
 import java.io.File;
@@ -8,7 +10,7 @@ import java.io.IOException;
 
 public class Controller {
     private static Controller instance;
-    private Model _model;
+    private Scoreboard scoreboard;
 
     public static Controller GetInstance() {
         if (instance == null) {
@@ -17,19 +19,19 @@ public class Controller {
         return instance;
     }
 
-    public void SetModel(Model model) {
-        this._model = model;
+    public void SetModel(Scoreboard model) {
+        this.scoreboard = model;
     }
 
     public void GetHistoryAction() {
-        var history = this._model.GetHistory();
-        var view = HistoryView.GetInstance();
+        var history = this.scoreboard.GetHistory();
+        var view = ScoreboardView.GetInstance();
         view.Open();
         view.UpdateHistory(history);
     }
 
     public void PrintCheckAction() {
-        var data = HistoryView.History(this._model.GetHistory()).toString();
+        var data = ScoreboardView.History(this.scoreboard.GetHistory()).toString();
         this.WriteToFile(data);
     }
 
@@ -56,30 +58,14 @@ public class Controller {
         view.Open();
     }
 
-    public void AddIncomeIndexAction() {
-        var view = AddIncomeView.GetInstance();
+    public void PlayAction() throws InterruptedException {
+        var service = new SimonGameService();
+        service.Play();
+    }
+
+    public void GetScoreboardAction() {
+        var view = ScoreboardView.GetInstance();
         view.Open();
-    }
-
-    public void AddExpenditureIndexAction() {
-        var view = AddExpenditureView.GetInstance();
-        view.Open();
-    }
-
-    public void AddIncomeCreateAction() {
-        var view = AddIncomeView.GetInstance();
-        this._model.AddIncome(view.GetIncomeDescription(), view.GetIncomeValue());
-        view.Close();
-        var mainView = IndexView.GetInstance();
-        mainView.UpdateBudget(this._model.GetBudget());
-    }
-
-    public void AddExpenditureCreateAction() {
-        var view = AddExpenditureView.GetInstance();
-        this._model.AddExpense(view.GetExpenditureDescription(), view.GetExpenditureValue());
-        view.CloseExpenditureAction();
-        var mainView = IndexView.GetInstance();
-        mainView.UpdateBudget(this._model.GetBudget());
     }
 
 }

@@ -2,24 +2,25 @@ package com.company.Views;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 
-public class HistoryView {
+public class ScoreboardView {
     private static final int DESCRIPTION_LENGTH = 150;
 
     private JFrame historyFrame;
     private JTextArea historyInfo;
 
-    private static HistoryView instance;
+    private static ScoreboardView instance;
 
-    public static HistoryView GetInstance() {
+    public static ScoreboardView GetInstance() {
         if (instance == null) {
-            instance = new HistoryView();
+            instance = new ScoreboardView();
         }
         return instance;
     }
 
-    private HistoryView() {
+    private ScoreboardView() {
         this.Init();
     }
 
@@ -33,18 +34,18 @@ public class HistoryView {
         this.historyFrame.setVisible(false);
     }
 
-    public void UpdateHistory(HashMap<String, Integer> history) {
+    public void UpdateHistory(ArrayList<Integer> history) {
         this.historyInfo.setText((History(history).toString()));
     }
 
-    public static StringBuilder History(HashMap<String, Integer> history) {
+    public static StringBuilder History(ArrayList<Integer> history) {
         StringBuilder str = new StringBuilder();
         if (history.size() == 0) {
             System.out.println("История операций пуста...");
             return new StringBuilder();
         }
-        for (var entry : history.entrySet()) {
-            str.append(FormatCell(entry.getKey())).append(" | ").append(entry.getValue()).append(" |\n");
+        for (var i = 0; i < history.size(); i++) {
+            str.append(FormatCell(String.valueOf(i))).append(" | ").append((history.get(i))).append(" |\n");
         }
         System.out.println(str);
         return str;

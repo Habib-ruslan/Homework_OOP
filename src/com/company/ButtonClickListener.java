@@ -1,13 +1,13 @@
 package com.company;
 
+import com.company.Controllers.Controller;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ButtonClickListener implements ActionListener {
-    public static final String ADD_INCOME_INDEX_ACTION = "addIncome";
-    public static final String ADD_INCOME_CREATE_ACTION = "submitAddIncome";
-    public static final String ADD_EXPENDITURE_INDEX_ACTION = "addExpenditure";
-    public static final String ADD_EXPENDITURE_CREATE_ACTION = "submitAddExpenditure";
+    public static final String PLAY_ACTION = "play";
+    public static final String GET_SCOREBOARD_ACTION = "scoreboard";
     public static final String HISTORY_INDEX_ACTION = "getHistory";
     public static final String PRINT_CHECK_INDEX_ACTION = "printCheck";
 
@@ -17,10 +17,14 @@ public class ButtonClickListener implements ActionListener {
 
         var command = e.getActionCommand();
         switch (command) {
-            case ADD_INCOME_INDEX_ACTION -> controller.AddIncomeIndexAction();
-            case ADD_INCOME_CREATE_ACTION -> controller.AddIncomeCreateAction();
-            case ADD_EXPENDITURE_INDEX_ACTION -> controller.AddExpenditureIndexAction();
-            case ADD_EXPENDITURE_CREATE_ACTION -> controller.AddExpenditureCreateAction();
+            case PLAY_ACTION -> {
+                try {
+                    controller.PlayAction();
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+            case GET_SCOREBOARD_ACTION -> controller.GetScoreboardAction();
             case HISTORY_INDEX_ACTION -> controller.GetHistoryAction();
             case PRINT_CHECK_INDEX_ACTION -> controller.PrintCheckAction();
         }
