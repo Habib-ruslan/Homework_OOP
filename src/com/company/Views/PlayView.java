@@ -27,6 +27,8 @@ public class PlayView {
     private final static Color BLUE_BUTTON_HIGHLIGHT_COLOR = new Color(105, 189, 255);
     private final static Color YELLOW_BUTTON_HIGHLIGHT_COLOR = new Color(255, 228, 114);
 
+    public final static int BUTTONS_COUNT = 4;
+
     private JFrame frame;
     private JLabel score;
     private JLabel message;

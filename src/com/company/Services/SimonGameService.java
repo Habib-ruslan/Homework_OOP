@@ -22,6 +22,7 @@ public class SimonGameService {
 
     private final static int SCORE_FOR_SUCCESS = 5;
     private final static float DIFFICULTY_MULTIPLIER = 0.5f;
+    public final static int PERIOD_SHIFT_MIN_SEQUENCE_LENGTH = 3;
     private int rewardForCurrentRound;
     private int maxLengthSequence = 5;
     private int minLengthSequence = 3;
@@ -85,7 +86,7 @@ public class SimonGameService {
         this.session = new Session();
     }
 
-    private ArrayList<Integer> GenerateSequence() {
+    public ArrayList<Integer> GenerateSequence() {
         var result = new ArrayList<Integer>();
         var date = new Date();
         var random = new Random(date.getTime());
@@ -100,6 +101,25 @@ public class SimonGameService {
         return result;
     }
 
+    public int GetMaxLengthSequence()
+    {
+        return this.maxLengthSequence;
+    }
+
+    public void SetMaxLengthSequence(int value)
+    {
+        this.maxLengthSequence = value;
+    }
+
+    public int GetMinLengthSequence()
+    {
+        return this.minLengthSequence;
+    }
+
+    public void SetMinLengthSequence(int value)
+    {
+        this.minLengthSequence = value;
+    }
     public void SendButtonInput(int buttonNumber) {
         if (buttonNumber != this.expectedButtonIndex) {
             this.Fail();
@@ -143,9 +163,9 @@ public class SimonGameService {
         DelayHelper.CreateAndStartTimer(1000, listener);
     }
 
-    private void IncreaseDifficulty() {
+    public void IncreaseDifficulty() {
         this.maxLengthSequence++;
-        if (this.maxLengthSequence % 3 == 0) {
+        if (this.maxLengthSequence % PERIOD_SHIFT_MIN_SEQUENCE_LENGTH == 0) {
             this.minLengthSequence++;
         }
     }
